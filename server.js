@@ -21,10 +21,10 @@ function verifyGitHubSignature(req, res, buf, encoding) {
     }
 }
 
-
 app.get('/', (req, res) => {
     res.send('Hello World!');
-});
+}
+);
 
 app.post('/github-webhook', (req, res) => {
     const event = req.headers['x-github-event'];
