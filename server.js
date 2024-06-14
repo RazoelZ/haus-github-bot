@@ -24,7 +24,7 @@ app.post('/github-webhook', async (req, res) => {
 
     // Send the message to Lark
     try {
-        const response = await axios.post('https://open.larksuite.com/open-apis/bot/v2/hook/YOUR_LARK_BOT_WEBHOOK_URL', message);
+        const response = await axios.post('https://open.larksuite.com/open-apis/bot/v2/hook/https://haus-github-bot-git-master-razoels-projects.vercel.app/', message);
         res.status(200).send('Event received and processed.');
     } catch (error) {
         console.error('Error sending message to Lark:', error);
