@@ -7,14 +7,15 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const LARK_WEBHOOK_URL = process.env.LARK_WEBHOOK_URL || 'https://open.larksuite.com/open-apis/bot/v2/hook/6a17f8c8-102a-4b92-a239-767e50408eea';
-const LARK_SECRET = process.env.LARK_SECRET || 'Cws7g0jLMmAItPd9YLsdR';
+const LARK_SECRET = process.env.LARK_SECRET || 'drBGP0orc7wUFI5qzM2msg';
+const GITHUB_SECRET = process.env.GITHUB_SECRET || 'drBGP0orc7wUFI5qzM2msg';
 
 app.use(bodyParser.json({ verify: verifyGitHubSignature }));
 
 // Verify GitHub signature
 function verifyGitHubSignature(req, res, buf, encoding) {
     const signature = req.headers['x-hub-signature-256'];
-    const hmac = crypto.createHmac('sha256', LARK_SECRET);
+    const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
     const digest = 'sha256=' + hmac.update(buf).digest('hex');
     if (signature !== digest) {
         throw new Error('Invalid signature');
@@ -33,6 +34,9 @@ app.post('/github-webhook', async (req, res) => {
     const event = req.headers['x-github-event'];
     const payload = req.body;
 
+    console.log(`Received event: ${event}`);
+    console.log(`Payload: ${JSON.stringify(payload, null, 2)}`);
+
     let message = '';
 
     switch (event) {
@@ -49,18 +53,25 @@ app.post('/github-webhook', async (req, res) => {
             message = `New event: ${event}`;
     }
 
-    const timestamp = Date.now();
+    const timestamp = Math.floor(Date.now() / 1000); // Convert to seconds
     const signature = generateLarkSignature(timestamp, LARK_SECRET);
+
+    console.log(`Sending message to Lark: ${message}`);
+    console.log(`Lark Signature: ${signature}`);
+    console.log(`Lark Timestamp: ${timestamp}`);
 
     try {
         await axios.post(LARK_WEBHOOK_URL, {
             msg_type: 'text',
             content: { text: message },
+        }, {
             headers: {
                 'X-Lark-Signature': signature,
                 'X-Lark-Timestamp': timestamp,
-            },
+            }
         });
+
+        console.log('Message sent to Lark successfully.');
         res.status(200).send('Event processed');
     } catch (err) {
         console.error('Error sending message to Lark:', err.response ? err.response.data : err.message);

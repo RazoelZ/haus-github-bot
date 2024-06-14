@@ -1,0 +1,24 @@
+{
+  "ref": "refs/heads/master",
+  "before": "9c4220d4f4bfb4c13b7f0bf60744dddf27e24a6a",
+  "after": "0000000000000000000000000000000000000000",
+  "repository": {
+    "id": 12345678,
+    "node_id": "MDEwOlJlcG9zaXRvcnkxMjM0NTY3OA==",
+    "name": "test-repo",
+    "full_name": "test-user/test-repo"
+  },
+  "pusher": {
+    "name": "RazoelZ",
+    "email": "dany.razoel69@gmail.com"
+  },
+  "head_commit": {
+    "id": "0000000000000000000000000000000000000000",
+    "message": "Test commit message",
+    "timestamp": "2023-06-14T17:00:00Z",
+    "author": {
+      "name": "RazoelZ",
+      "email": "dany.razoel69@gmail.com"
+    }
+  }
+}
