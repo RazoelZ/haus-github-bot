@@ -2,15 +2,18 @@
   "name": "haus-github-bot",
   "version": "1.0.0",
   "description": "Haus bot watcher in lark application",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "Razoel",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.2",
     "body-parser": "^1.20.2",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "nodemon": "^3.1.3"
   }
 }

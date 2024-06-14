@@ -7,6 +7,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
+
 app.post('/github-webhook', async (req, res) => {
     const payload = req.body;
 
