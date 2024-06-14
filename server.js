@@ -8,7 +8,7 @@ const PORT = 3000;
 const SECRET = 'E5udpopGayiEXbQpPOQCHdoAsxa38hsn';
 const LARK_WEBHOOK_URL = 'https://open.larksuite.com/anycross/trigger/lark/callback/MGJiZTMwMjNlNjRjMzc1NzFhMzAxODQ1OGMyZWRmZWNm';
 
-// Middleware to parse JSON bodies
+/// Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
 // Middleware to verify GitHub signature
