@@ -1,37 +1,62 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const axios = require('axios');
+import express from 'express';
+import axios from 'axios';
+import bodyParser from 'body-parser';
+import crypto from 'crypto';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
+const LARK_WEBHOOK_URL = process.env.LARK_WEBHOOK_URL || 'https://open.larksuite.com/open-apis/bot/v2/hook/6a17f8c8-102a-4b92-a239-767e50408eea';
+const GITHUB_SECRET = process.env.GITHUB_SECRET || 'Cws7g0jLMmAItPd9YLsdR';
+
+app.use(bodyParser.json({ verify: verifyGitHubSignature }));
+
+// Verify GitHub signature
+function verifyGitHubSignature(req, res, buf, encoding) {
+    const signature = req.headers['x-hub-signature-256'];
+    const hmac = crypto.createHmac('sha256', GITHUB_SECRET);
+    const digest = 'sha256=' + hmac.update(buf).digest('hex');
+    if (signature !== digest) {
+        throw new Error('Invalid signature');
+    }
+}
+
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.post('/github-webhook', async (req, res) => {
+app.post('/github-webhook', (req, res) => {
+    const event = req.headers['x-github-event'];
     const payload = req.body;
 
-    // Here, customize the message based on the event type
-    const message = {
-        "msg_type": "text",
-        "content": {
-            "text": `New commit in repository: ${payload.repository.full_name}\nCommit message: ${payload.head_commit.message}\nURL: ${payload.head_commit.url}`
-        }
-    };
+    let message = '';
 
-    // Send the message to Lark
-    try {
-        const response = await axios.post('https://open.larksuite.com/open-apis/bot/v2/hook/https://haus-github-bot-git-master-razoels-projects.vercel.app/', message);
-        res.status(200).send('Event received and processed.');
-    } catch (error) {
-        console.error('Error sending message to Lark:', error);
-        res.status(500).send('Error processing event.');
+    switch (event) {
+        case 'push':
+            message = `New push by ${payload.pusher.name} in ${payload.repository.name}:\n${payload.head_commit.message}`;
+            break;
+        case 'issues':
+            message = `New issue by ${payload.issue.user.login}:\n${payload.issue.title}`;
+            break;
+        case 'pull_request':
+            message = `New pull request by ${payload.pull_request.user.login}:\n${payload.pull_request.title}`;
+            break;
+        default:
+            message = `New event: ${event}`;
     }
+
+    axios.post(LARK_WEBHOOK_URL, {
+        msg_type: 'text',
+        content: { text: message }
+    }).then(() => {
+        res.status(200).send('Event processed');
+    }).catch(err => {
+        console.error('Error sending message to Lark:', err);
+        res.status(500).send('Error processing event');
+    });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
