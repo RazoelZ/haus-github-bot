@@ -1,7 +1,7 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const crypto = require('crypto');
-const axios = require('axios');
+import express from 'express';
+import axios from 'axios';
+import bodyParser from 'body-parser';
+import crypto from 'crypto';
 
 const app = express();
 const PORT = 3000;
