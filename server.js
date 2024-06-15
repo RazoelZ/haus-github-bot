@@ -8,7 +8,7 @@ const PORT = 3000;
 const VERIFY_TOKEN = 'E5udpopGayiEXbQpPOQCHdoAsxa38hsn';
 const LARK_WEBHOOK_URL = 'https://open.larksuite.com/anycross/trigger/lark/callback/MGJiZTMwMjNlNjRjMzc1NzFhMzAxODQ1OGMyZWRmZWNm';
 const LARK_API_URL = 'https://open.larksuite.com/open-apis/im/v1/messages/';
-const AUTH_TOKEN = 'om_dc13264520392913993dd051dba21dcf';  // Replace with your actual authorization token
+const AUTH_TOKEN = 't-g2056fhl3XBHGMMWHGQ6ITUXZ7UFXSVVXTQFXDDC';  // Replace with your actual authorization token
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
