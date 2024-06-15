@@ -74,7 +74,7 @@ const sendMessageToLark = (message) => {
         content: {
             text: message,
         },
-        receive_id: 'oc_da933eb5b74c65d365a70b5277ac459d',
+        "receive_id": "oc_da933eb5b74c65d365a70b5277ac459d",
     };
 
     console.log('Sending message to Lark:', JSON.stringify(payload));
@@ -83,6 +83,9 @@ const sendMessageToLark = (message) => {
         headers: {
             'Authorization': `Bearer ${AUTH_TOKEN}`,
             'Content-Type': 'application/json',
+        },
+        params: {
+            receive_id_type: 'oc_7161a7463ab72be5e6ee11ae1bde7306',  // Replace with the correct type you intend to use
         },
         paramsSerializer: params => {
             return Object.entries(params)
