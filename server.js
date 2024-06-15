@@ -70,7 +70,7 @@ const processEvent = (event, data) => {
 // Send message to Lark
 const sendMessageToLark = (message) => {
     const payload = {
-        open_id: 'ou_8a397b8e3011942e8cf7d328a0166296',  // Replace with the appropriate recipient ID in Lark
+        open_id: 'ou_8a397b8e3011942e8cf7d328a0166296',  // Replace with the actual recipient's Open ID or chat ID
         msg_type: 'text',
         content: {
             text: message,
