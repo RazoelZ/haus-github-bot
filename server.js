@@ -75,6 +75,9 @@ const sendMessageToLark = (message) => {
         content: {
             text: message,
         },
+        params: {
+            receive_id_type: 'chat_id',  // Specify the type of ID you are using
+        },
     };
 
     console.log('Sending message to Lark:', JSON.stringify(payload));
@@ -84,9 +87,6 @@ const sendMessageToLark = (message) => {
             'Authorization': `Bearer ${AUTH_TOKEN}`,
             'Content-Type': 'application/json',
         },
-        params: {
-            receive_id_type: 'ou_8a397b8e3011942e8cf7d328a0166296',  // Specify the type of ID you are using
-        }
     })
         .then(response => {
             console.log('Message sent to Lark:', response.data);
@@ -95,9 +95,16 @@ const sendMessageToLark = (message) => {
             console.error('Failed to send message to Lark:', error);
             if (error.response) {
                 console.error('Response data:', error.response.data);
+                if (error.response.data.error && error.response.data.error.field_violations) {
+                    console.log('Field violations:');
+                    error.response.data.error.field_violations.forEach(violation => {
+                        console.log(violation);
+                    });
+                }
             }
         });
 };
+
 
 // Start the server
 app.listen(PORT, () => {
