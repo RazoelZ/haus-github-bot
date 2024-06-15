@@ -75,9 +75,6 @@ const sendMessageToLark = (message) => {
         content: {
             text: message,
         },
-        params: {
-            receive_id_type: 'chat_id',  // Specify the type of ID you are using
-        },
     };
 
     console.log('Sending message to Lark:', JSON.stringify(payload));
@@ -86,6 +83,9 @@ const sendMessageToLark = (message) => {
         headers: {
             'Authorization': `Bearer ${AUTH_TOKEN}`,
             'Content-Type': 'application/json',
+        },
+        params: {
+            receive_id_type: 'chat_id',  // Specify the type of ID you are using
         },
     })
         .then(response => {
