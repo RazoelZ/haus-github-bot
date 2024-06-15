@@ -15,7 +15,6 @@ app.use(bodyParser.json());
 
 // Middleware to verify GitHub signature
 app.use((req, res, next) => {
-    console.log('Received request:', req.method, req.url);  // Log request method and URL
     const signature = req.headers['x-hub-signature'];
     if (!signature) {
         console.log('Missing signature');
@@ -62,7 +61,7 @@ const processEvent = (event, data) => {
     } else {
         message = `New event: ${event}`;
     }
-    console.log('Message to send to Lark:', message);
+    console.log('Message to send to Lark:', message)
 
     sendMessageToLark(message);
 };
@@ -77,7 +76,6 @@ const sendMessageToLark = (message) => {
         receive_id: 'oc_da933eb5b74c65d365a70b5277ac459d',  // Replace with actual receive_id
     };
 
-    console.log('Sending message to Lark:', JSON.stringify(payload));
 
     axios.post(LARK_API_URL, payload, {
         headers: {
@@ -98,15 +96,6 @@ const sendMessageToLark = (message) => {
         })
         .catch(error => {
             console.error('Failed to send message to Lark:', error);
-            if (error.response) {
-                console.error('Response data:', error.response.data);
-                if (error.response.data.error && error.response.data.error.field_violations) {
-                    console.log('Field violations:');
-                    error.response.data.error.field_violations.forEach(violation => {
-                        console.log(violation);
-                    });
-                }
-            }
         });
 };
 
