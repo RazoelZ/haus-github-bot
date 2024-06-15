@@ -71,12 +71,17 @@ const sendMessageToLark = (message) => {
         },
     };
 
+    console.log('Sending message to Lark:', JSON.stringify(payload));
+
     axios.post(LARK_WEBHOOK_URL, payload)
         .then(response => {
             console.log('Message sent to Lark:', response.data);
         })
         .catch(error => {
             console.error('Failed to send message to Lark:', error);
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+            }
         });
 };
 
