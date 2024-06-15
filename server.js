@@ -13,8 +13,10 @@ app.use(bodyParser.json());
 
 // Middleware to verify GitHub signature
 app.use((req, res, next) => {
+    console.log('Received request:', req.method, req.url);  // Log request method and URL
     const signature = req.headers['x-hub-signature'];
     if (!signature) {
+        console.log('Missing signature');
         return res.status(400).send('Missing signature');
     }
 
@@ -24,8 +26,10 @@ app.use((req, res, next) => {
     const digest = `sha1=${hmac.digest('hex')}`;
 
     if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))) {
+        console.log('Signature verified');
         next();
     } else {
+        console.log('Invalid signature');
         return res.status(400).send('Invalid signature');
     }
 });
@@ -37,6 +41,7 @@ app.get('/', (req, res) => {
 app.post('/webhook', (req, res) => {
     console.log('Received GitHub event:', req.headers['x-github-event']);
     const data = req.body;
+    console.log('Payload:', JSON.stringify(data, null, 2));  // Log full payload
 
     processEvent(req.headers['x-github-event'], data);
 
@@ -44,7 +49,7 @@ app.post('/webhook', (req, res) => {
 });
 
 const processEvent = (event, data) => {
-    console.log('Processing event:', event, data);
+    console.log('Processing event:', event);
     let message;
     if (event === 'push') {
         message = `New push to ${data.repository.name} by ${data.pusher.name}.`;
@@ -53,6 +58,7 @@ const processEvent = (event, data) => {
     } else {
         message = `New event: ${event}`;
     }
+    console.log('Message to send to Lark:', message);
 
     sendMessageToLark(message);
 };
