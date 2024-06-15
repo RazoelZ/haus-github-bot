@@ -51,20 +51,24 @@ app.post('/webhook', (req, res) => {
 const processEvent = (event, data) => {
     let message;
     if (event === 'push') {
+        const branch = data.ref.split('/').pop(); // Extract branch name from ref
         const commits = data.commits.map(commit => {
             return `- ${commit.message} by ${commit.author.name}`;
         }).join('\n');
 
-        message = `New push to ${data.repository.name} by ${data.pusher.name}:\n${commits}`;
+        message = `New push to ${data.repository.name} on branch ${branch} by ${data.pusher.name}:\n${commits}`;
     } else if (event === 'pull_request') {
-        message = `New pull request #${data.number} in ${data.repository.name}.`;
+        const sourceBranch = data.pull_request.head.ref;
+        const targetBranch = data.pull_request.base.ref;
+        message = `New pull request #${data.number} in ${data.repository.name} from ${sourceBranch} to ${targetBranch}.`;
     } else {
         message = `New event: ${event}`;
     }
-    console.log('Message to send to Lark:', message)
+    console.log('Message to send to Lark:', message);
 
     sendMessageToLark(message);
 };
+
 
 // Send message to Lark
 const sendMessageToLark = (message) => {
