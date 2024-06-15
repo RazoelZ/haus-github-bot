@@ -52,7 +52,11 @@ app.post('/webhook', (req, res) => {
 const processEvent = (event, data) => {
     let message;
     if (event === 'push') {
-        message = `New push to ${data.repository.name} by ${data.pusher.name}.`;
+        const commits = data.commits.map(commit => {
+            return `- ${commit.message} by ${commit.author.name}`;
+        }).join('\n');
+
+        message = `New push to ${data.repository.name} by ${data.pusher.name}:\n${commits}`;
     } else if (event === 'pull_request') {
         message = `New pull request #${data.number} in ${data.repository.name}.`;
     } else {
@@ -74,44 +78,17 @@ const sendMessageToLark = (message) => {
 
     console.log('Sending message to Lark:', JSON.stringify(payload));
 
-    axios.post(LARK_WEBHOOK_URL, payload)
+    axios.post(LARK_API_URL, payload, {
+        headers: {
+            'Authorization': `Bearer ${AUTH_TOKEN}`,
+            'Content-Type': 'application/json',
+        },
+    })
         .then(response => {
             console.log('Message sent to Lark:', response.data);
-            // Forward the message to another chat in Lark
-            forwardMessageToLark(response.data.message_id, 'chat_id', 'your_uuid', 'target_chat_id');
         })
         .catch(error => {
             console.error('Failed to send message to Lark:', error);
-            if (error.response) {
-                console.error('Response data:', error.response.data);
-            }
-        });
-};
-
-// Forward message to another chat in Lark
-const forwardMessageToLark = (messageId, receiveIdType, uuid, receiveId) => {
-    const url = `${LARK_API_URL}${messageId}/forward`;
-
-    const headers = {
-        'Authorization': `Bearer ${AUTH_TOKEN}`,
-        'Content-Type': 'application/json',
-    };
-
-    const params = {
-        receive_id_type: receiveIdType,
-        uuid: uuid,
-    };
-
-    const requestBody = {
-        receive_id: receiveId,
-    };
-
-    axios.post(url, requestBody, { headers: headers, params: params })
-        .then(response => {
-            console.log('Message forwarded successfully:', response.data);
-        })
-        .catch(error => {
-            console.error('Failed to forward message:', error);
             if (error.response) {
                 console.error('Response data:', error.response.data);
             }
