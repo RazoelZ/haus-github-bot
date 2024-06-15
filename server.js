@@ -39,9 +39,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/webhook', (req, res) => {
-    console.log('Received GitHub event:', req.headers['x-github-event']);
     const data = req.body;
-    console.log('Payload:', JSON.stringify(data, null, 2));  // Log full payload
 
     processEvent(req.headers['x-github-event'], data);
 
@@ -49,7 +47,6 @@ app.post('/webhook', (req, res) => {
 });
 
 const processEvent = (event, data) => {
-    console.log('Processing event:', event);
     let message;
     if (event === 'push') {
         message = `New push to ${data.repository.name} by ${data.pusher.name}.`;
@@ -65,6 +62,7 @@ const processEvent = (event, data) => {
 
 const sendMessageToLark = (message) => {
     const payload = {
+        chat_id: 'your-chat-id',  // Specify the chat ID here if needed
         msg_type: 'text',
         content: {
             text: message,
@@ -84,6 +82,7 @@ const sendMessageToLark = (message) => {
             }
         });
 };
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
