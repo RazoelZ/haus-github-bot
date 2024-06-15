@@ -70,11 +70,12 @@ const processEvent = (event, data) => {
 // Send message to Lark
 const sendMessageToLark = (message) => {
     const payload = {
-        open_id: 'ou_8a397b8e3011942e8cf7d328a0166296',  // Replace with the actual recipient's Open ID or chat ID
+        open_id: 'ou_8a397b8e3011942e8cf7d328a0166296',  // Replace with the appropriate recipient ID in Lark
         msg_type: 'text',
         content: {
             text: message,
         },
+        receive_id_type: 'ou_8a397b8e3011942e8cf7d328a0166296',
     };
 
     console.log('Sending message to Lark:', JSON.stringify(payload));
@@ -92,12 +93,6 @@ const sendMessageToLark = (message) => {
             console.error('Failed to send message to Lark:', error);
             if (error.response) {
                 console.error('Response data:', error.response.data);
-                if (error.response.data.error && error.response.data.error.field_violations) {
-                    console.log('Field violations:');
-                    error.response.data.error.field_violations.forEach(violation => {
-                        console.log(violation);
-                    });
-                }
             }
         });
 };
