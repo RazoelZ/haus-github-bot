@@ -74,7 +74,7 @@ const sendMessageToLark = (message) => {
         content: {
             text: message,
         },
-        "receive_id": "oc_da933eb5b74c65d365a70b5277ac459d",
+        receive_id: 'oc_da933eb5b74c65d365a70b5277ac459d',
     };
 
     console.log('Sending message to Lark:', JSON.stringify(payload));
