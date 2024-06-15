@@ -1,14 +1,20 @@
 import express from 'express';
-import axios from 'axios';
 import bodyParser from 'body-parser';
 import crypto from 'crypto';
+import axios from 'axios';
 
 const app = express();
 const PORT = 3000;
-const SECRET = 'E5udpopGayiEXbQpPOQCHdoAsxa38hsn';
+const VERIFY_TOKEN = 'E5udpopGayiEXbQpPOQCHdoAsxa38hsn';
 const LARK_WEBHOOK_URL = 'https://open.larksuite.com/anycross/trigger/lark/callback/MGJiZTMwMjNlNjRjMzc1NzFhMzAxODQ1OGMyZWRmZWNm';
 
-/// Middleware to parse JSON bodies
+
+//check if the server running
+app.get('/', (req, res) => {
+    res.status(200).send('Server is running.');
+});
+
+// Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
 // Middleware to verify GitHub signature
@@ -19,7 +25,7 @@ app.use((req, res, next) => {
     }
 
     const payload = JSON.stringify(req.body);
-    const hmac = crypto.createHmac('sha1', SECRET);
+    const hmac = crypto.createHmac('sha1', VERIFY_TOKEN);
     hmac.update(payload, 'utf-8');
     const digest = `sha1=${hmac.digest('hex')}`;
 
