@@ -74,7 +74,7 @@ const sendMessageToLark = (message) => {
         content: {
             text: message,
         },
-        "receive_id": "oc_da933eb5b74c65d365a70b5277ac459d",
+        receive_id: 'oc_da933eb5b74c65d365a70b5277ac459d',  // Specific receive_id value
     };
 
     console.log('Sending message to Lark:', JSON.stringify(payload));
@@ -85,7 +85,7 @@ const sendMessageToLark = (message) => {
             'Content-Type': 'application/json',
         },
         params: {
-            receive_id_type: 'chat_id',  // Replace with the correct type you intend to use
+            receive_id_type: 'chat_id',  // Specified as chat_id
         },
         paramsSerializer: params => {
             return Object.entries(params)
@@ -109,6 +109,7 @@ const sendMessageToLark = (message) => {
             }
         });
 };
+
 
 
 // Start the server
