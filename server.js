@@ -8,12 +8,6 @@ const PORT = 3000;
 const VERIFY_TOKEN = 'E5udpopGayiEXbQpPOQCHdoAsxa38hsn';
 const LARK_WEBHOOK_URL = 'https://open.larksuite.com/anycross/trigger/lark/callback/MGJiZTMwMjNlNjRjMzc1NzFhMzAxODQ1OGMyZWRmZWNm';
 
-
-//check if the server running
-app.get('/', (req, res) => {
-    res.status(200).send('Server is running.');
-});
-
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
@@ -36,16 +30,21 @@ app.use((req, res, next) => {
     }
 });
 
+app.get('/', (req, res) => {
+    res.status(200).send('Server is running.');
+});
+
 app.post('/webhook', (req, res) => {
-    const event = req.headers['x-github-event'];
+    console.log('Received GitHub event:', req.headers['x-github-event']);
     const data = req.body;
 
-    processEvent(event, data);
+    processEvent(req.headers['x-github-event'], data);
 
     res.status(204).send();
 });
 
 const processEvent = (event, data) => {
+    console.log('Processing event:', event, data);
     let message;
     if (event === 'push') {
         message = `New push to ${data.repository.name} by ${data.pusher.name}.`;
