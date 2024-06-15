@@ -1,0 +1,6 @@
+POST https://open.larksuite.com/open-apis/authen/v1/oidc/access_token
+Accept: application/json
+{
+	"code": "E5udpopGayiEXbQpPOQCHdoAsxa38hsn",
+	"grant_type": "authorization_code"
+}
