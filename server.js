@@ -92,6 +92,12 @@ const sendMessageToLark = (message) => {
             console.error('Failed to send message to Lark:', error);
             if (error.response) {
                 console.error('Response data:', error.response.data);
+                if (error.response.data.error && error.response.data.error.field_violations) {
+                    console.log('Field violations:');
+                    error.response.data.error.field_violations.forEach(violation => {
+                        console.log(violation);
+                    });
+                }
             }
         });
 };
