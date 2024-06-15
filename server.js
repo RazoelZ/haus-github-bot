@@ -85,7 +85,7 @@ const sendMessageToLark = (message) => {
             'Content-Type': 'application/json',
         },
         params: {
-            receive_id_type: 'oc_7161a7463ab72be5e6ee11ae1bde7306',  // Replace with the correct type you intend to use
+            receive_id_type: 'chat_id',  // Replace with the correct type you intend to use
         },
         paramsSerializer: params => {
             return Object.entries(params)
