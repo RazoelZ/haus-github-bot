@@ -70,7 +70,6 @@ const processEvent = (event, data) => {
 // Send message to Lark
 const sendMessageToLark = (message) => {
     const payload = {
-        open_id: 'ou_8a397b8e3011942e8cf7d328a0166296',  // Replace with the actual recipient's Open ID or chat ID
         msg_type: 'text',
         content: {
             text: message,
@@ -85,8 +84,13 @@ const sendMessageToLark = (message) => {
             'Content-Type': 'application/json',
         },
         params: {
-            receive_id_type: 'ou_8a397b8e3011942e8cf7d328a0166296',  // Specify the type of ID you are using
+            receive_id_type: 'ou_8a397b8e3011942e8cf7d328a0166296',  // Replace with the correct type you intend to use
         },
+        paramsSerializer: params => {
+            return Object.entries(params)
+                .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+                .join('&');
+        }
     })
         .then(response => {
             console.log('Message sent to Lark:', response.data);
