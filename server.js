@@ -70,6 +70,7 @@ const processEvent = (event, data) => {
 // Send message to Lark
 const sendMessageToLark = (message) => {
     const payload = {
+        open_id: 'your_open_id',  // Replace with the appropriate recipient ID in Lark
         msg_type: 'text',
         content: {
             text: message,
