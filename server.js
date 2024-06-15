@@ -71,10 +71,10 @@ const processEvent = (event, data) => {
 const sendMessageToLark = (message) => {
     const payload = {
         msg_type: 'text',
-        content: {
+        content: JSON.stringify({
             text: message,
-        },
-        receive_id: 'oc_da933eb5b74c65d365a70b5277ac459d',  // Specific receive_id value
+        }),
+        receive_id: 'oc_da933eb5b74c65d365a70b5277ac459d',  // Replace with actual receive_id
     };
 
     console.log('Sending message to Lark:', JSON.stringify(payload));
@@ -85,7 +85,7 @@ const sendMessageToLark = (message) => {
             'Content-Type': 'application/json',
         },
         params: {
-            receive_id_type: 'chat_id',  // Specified as chat_id
+            receive_id_type: 'chat_id',  // Specify the correct type of receive_id
         },
         paramsSerializer: params => {
             return Object.entries(params)
