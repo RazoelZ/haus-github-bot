@@ -6,7 +6,6 @@ import axios from 'axios';
 const app = express();
 const PORT = 3000;
 const VERIFY_TOKEN = 'E5udpopGayiEXbQpPOQCHdoAsxa38hsn';
-const LARK_WEBHOOK_URL = 'https://open.larksuite.com/anycross/trigger/lark/callback/MGJiZTMwMjNlNjRjMzc1NzFhMzAxODQ1OGMyZWRmZWNm';
 const LARK_API_URL = 'https://open.larksuite.com/open-apis/im/v1/messages/';
 const AUTH_TOKEN = 't-g2056fnE6RN2W36G4AMIGE2NAVGS7CLDPB4CHKUQ';  // Replace with your actual authorization token
 
