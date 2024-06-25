@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3000;
 const VERIFY_TOKEN = 'E5udpopGayiEXbQpPOQCHdoAsxa38hsn';
 const LARK_API_URL = 'https://open.larksuite.com/open-apis/im/v1/messages/';
-const AUTH_TOKEN = 't-g2056fnE6RN2W36G4AMIGE2NAVGS7CLDPB4CHKUQ';  // Replace with your actual authorization token
+const AUTH_TOKEN = 't-g2056peOVQXHAHBJFG6VU6DRBN65I6D7MUWGNRS5';  // Replace with your actual authorization token
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
